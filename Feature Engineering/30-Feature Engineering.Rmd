@@ -1,0 +1,141 @@
+---
+title: "30-Feature Engineering"
+output: html_notebook
+---
+# Creating/setting the features up for prediction
+
+In our dataset we have age,overall,value,wage,potential and position. We don't have the time a player has spent at the club in years, for that we would need the date when that player joined the club which is in the column "joined". So we will take that column as well.
+
+Release Clause column is included here because it is the column we're trying to predict.So We will keep the actual values to compare our predictions with.
+
+Since we still dont have that growth column we are gonna keep the overall and potential column and create a growth column in Feature Engineering.
+
+Information about the player position is in the BP(Best Position) Column.
+
+
+
+
+## 1) Creating a function column for time spent by the player at the club.
+
+Creating a column to calculate the number of years a player has been playing in his current club
+
+Since the Joining date column is not in right format, I'm extracting the last 4 values from the end which is the year of joining and subtracting it from present year value.
+
+```{r}
+years_playing<-function(df){
+df %>% 
+  mutate(years_playing=abs(as.numeric(str_sub(joined,-4))-year(today())))
+}
+
+## Checking the data structure after feature engineering
+fifa20_data %>% years_playing() %>% select(years_playing,everything())
+
+
+### Assert Conditions :
+#### New columns for years playing is numeric and within bounds of (0,40)
+  fifa20_data %>%
+  years_playing() %>% 
+  select(years_playing,everything()) %>% 
+  assert(is.numeric,years_playing) %>%
+  assert(within_bounds(0,40),years_playing)
+```
+
+
+## 2) Creating a function to change the values of the value and wage column and turning them into numbers for the model,putting them in the right format and removing 'K' and 'M'
+
+
+
+```{r}
+Format_money<-function(df,column,suffix){
+  if(suffix=="M"){
+   df %>% 
+      mutate( value = as.numeric(substr({{column}},2,str_length({{column}})-1))*10^6)
+  }
+  else{
+    df %>% 
+      mutate(wage= as.numeric(substr({{column}},2,str_length({{column}})-1))*10^3)
+  }
+}
+
+## Looking at the data after feature engineering
+
+fifa20_data %>% Format_money(column=value,suffix="M") %>% Format_money(column=wage,suffix="K") %>% 
+  select(value,wage,everything())
+
+## Assert check 
+### new column values are numeric 
+      fifa20_data %>% 
+       Format_money(column=value,suffix="M") %>%
+       Format_money(column=wage,suffix="K") %>% 
+       select(value,wage,everything()) %>% 
+       assert(is.numeric,value,wage)
+```
+
+## 3) Creating a function to find out if the player plays in an Attacking position or a defensive position or the goalkeeper
+
+```{r}
+Attack_pos<-function(df){
+  df %>% 
+    mutate(attack_pos= 
+      if_else(bp=="CAM"|bp=="ST"|bp=="LW"|bp=="RW"|bp=="CF"|bp=="CM"|bp=="LM"|bp=="RM",
+               1,0))
+}
+
+Defense_pos<-function(df){
+     df %>% 
+    mutate(defense_pos= 
+      if_else(bp=="CB"|bp=="CDM"|bp=="LB"|bp=="RB"|bp=="RWB"|bp=="LWB",
+               1,0))
+}
+
+
+Goalkeeper_pos<-function(df){
+    df %>% 
+    mutate(keeper_pos=if_else(bp=="GK",1,0))
+            
+}
+
+
+
+## Checking data structure after feature engineering
+
+fifa20_data %>% Attack_pos %>% Defense_pos %>% Goalkeeper_pos %>% 
+  select(attack_pos,defense_pos,keeper_pos,everything())
+
+
+
+## Assert check :
+##Column values 0,1  only.
+
+fifa20_data %>%
+  Attack_pos %>% 
+  Defense_pos %>% 
+  Goalkeeper_pos %>% 
+  select(attack_pos,defense_pos,keeper_pos,everything()) %>%       assert(in_set(0,1),attack_pos,defense_pos,keeper_pos)
+
+```
+
+
+## 4) Creating a function to find out the growth potential of a player.
+
+```{r}
+Growth_potential<-function(df)
+{
+  df %>% 
+    mutate(growth_potential=potential-overall)
+}
+
+## checking data after feature engineering
+fifa20_data %>% Growth_potential %>% 
+  select(growth_potential,everything())
+
+## Assert conditions:
+#### New column has numeric values
+ fifa20_data<-fifa20_data %>% 
+   Growth_potential %>% 
+  select(growth_potential,everything()) %>% 
+   assert(is.numeric,growth_potential)
+```
+
+
+
