@@ -22,7 +22,7 @@ Predicting this might involve factors such as
 
 2. Player Overall
 
-3. **Value of the Player determined by their clubs in terms of money, how valuable that player is **
+3. **Value of the Player determined by their clubs in terms of money, how valuable that player is**
 
 4. **What are his wages.**
 
