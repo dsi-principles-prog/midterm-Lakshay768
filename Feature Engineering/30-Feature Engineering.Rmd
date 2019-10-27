@@ -22,22 +22,7 @@ Creating a column to calculate the number of years a player has been playing in 
 Since the Joining date column is not in right format, I'm extracting the last 4 values from the end which is the year of joining and subtracting it from present year value.
 
 ```{r}
-years_playing<-function(df){
-df %>% 
-  mutate(years_playing=abs(as.numeric(str_sub(Joined,-4))-year(today())))
-}
 
-## Checking the data structure after feature engineering
-fifa20_data %>% years_playing() %>% select(years_playing,everything())
-
-
-### Assert Conditions :
-#### New columns for years playing is numeric and within bounds of (0,40)
-fifa20_data<-fifa20_data %>%
-  years_playing() %>% 
-  select(years_playing,everything()) %>% 
-  assert(is.numeric,years_playing) %>%
-  assert(within_bounds(0,40),years_playing)
 ```
 
 
@@ -46,29 +31,7 @@ fifa20_data<-fifa20_data %>%
 
 
 ```{r}
-Format_money<-function(df,column,suffix){
-  if(suffix=="M"){
-   df %>% 
-      mutate( Value = as.numeric(substr({{column}},2,str_length({{column}})-1))*10^6)
-  }
-  else{
-    df %>% 
-      mutate(Wage= as.numeric(substr({{column}},2,str_length({{column}})-1))*10^3)
-  }
-}
 
-## Looking at the data after feature engineering
-
-fifa20_data %>% Format_money(column=Value,suffix="M") %>% Format_money(column=Wage,suffix="K") %>% 
-  select(Value,Wage,everything())
-
-## Assert check 
-### new column values are numeric 
-     fifa20_data<-fifa20_data %>% 
-       Format_money(column=Value,suffix="M") %>%
-       Format_money(column=Wage,suffix="K") %>% 
-       select(Value,Wage,everything()) %>% 
-       assert(is.numeric,Value,Wage)
 ```
 
 ## 3) Creating a function to find out if the player plays in an Attacking position or a defensive position or the goalkeeper
