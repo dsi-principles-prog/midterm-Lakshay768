@@ -32,4 +32,5 @@ Predicting this might involve factors such as
 
 7. The position the player plays at - In the real scenario one of the most highest paid football players right now are the players who play at the front(Attacking players), which is not fair because all positions are equally important but this is how it is. Clubs tend to pay more money to attacking players, so position matters.
 
-NOTE: The factors/features in bold would be created in future, there are issues with them which need resolving.
+
+**NOTE: The factors/features in bold would be created in future, there are issues with them which need resolving.**
