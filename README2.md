@@ -7,6 +7,7 @@ The dataset is FIFA 20 complete player dataset. This dataset has all the informa
 
 FIFA 20 players data consisting of over 18K players information and about 70 attributes including name, age, overall, value, position, etc.
 
+Link to data : https://www.kaggle.com/farukbuldur/fifa-2020-exploration-1st-version/data
 ## PROBLEM IDENTIFIED:
 
 Problem: Predicting the release clause value of a player. 
