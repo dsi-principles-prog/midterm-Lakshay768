@@ -1,0 +1,9 @@
+# Creating/setting the features up for prediction
+
+In our dataset we have age,overall,value,wage,potential and position. We don't have the time a player has spent at the club in years, for that we would need the date when that player joined the club which is in the column "joined". So we will take that column as well.
+
+Release Clause column is included here because it is the column we're trying to predict.So We will keep the actual values to compare our predictions with.
+
+Since we still dont have that growth column we are gonna keep the overall and potential column and create a growth column in Feature Engineering.
+
+Information about the player position is in the BP(Best Position) Column.
