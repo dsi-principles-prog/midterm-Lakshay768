@@ -21,7 +21,7 @@ Predicting this might involve factors such as
 
 1. Player age
 
-2. Player Overall
+2. Player Overall- Overall rating of the player out of 100
 
 3. **Value of the Player determined by their clubs in terms of money, how valuable that player is**
 
