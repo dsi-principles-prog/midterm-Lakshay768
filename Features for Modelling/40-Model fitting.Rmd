@@ -29,9 +29,8 @@ fifa20_data<-fifa20_data %>%
   Attack_pos %>% 
   Defense_pos %>% 
   Goalkeeper_pos %>%
-  Format_money(column=value,suffix="M") %>%
-  Format_money(column=wage,suffix="K") %>% 
-  years_playing() 
+  #Insert function created for fixing Value and Wage %>%
+  #Insert function created  for years spent at the club
   
 ```
 
