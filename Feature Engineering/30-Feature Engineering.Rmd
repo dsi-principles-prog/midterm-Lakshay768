@@ -46,29 +46,7 @@ fifa20_data %>% years_playing() %>% select(years_playing,everything())
 
 
 ```{r}
-Format_money<-function(df,column,suffix){
-  if(suffix=="M"){
-   df %>% 
-      mutate( value = as.numeric(substr({{column}},2,str_length({{column}})-1))*10^6)
-  }
-  else{
-    df %>% 
-      mutate(wage= as.numeric(substr({{column}},2,str_length({{column}})-1))*10^3)
-  }
-}
 
-## Looking at the data after feature engineering
-
-fifa20_data %>% Format_money(column=value,suffix="M") %>% Format_money(column=wage,suffix="K") %>% 
-  select(value,wage,everything())
-
-## Assert check 
-### new column values are numeric 
-      fifa20_data %>% 
-       Format_money(column=value,suffix="M") %>%
-       Format_money(column=wage,suffix="K") %>% 
-       select(value,wage,everything()) %>% 
-       assert(is.numeric,value,wage)
 ```
 
 ## 3) Creating a function to find out if the player plays in an Attacking position or a defensive position or the goalkeeper
@@ -119,22 +97,7 @@ fifa20_data %>%
 ## 4) Creating a function to find out the growth potential of a player.
 
 ```{r}
-Growth_potential<-function(df)
-{
-  df %>% 
-    mutate(growth_potential=potential-overall)
-}
 
-## checking data after feature engineering
-fifa20_data %>% Growth_potential %>% 
-  select(growth_potential,everything())
-
-## Assert conditions:
-#### New column has numeric values
- fifa20_data<-fifa20_data %>% 
-   Growth_potential %>% 
-  select(growth_potential,everything()) %>% 
-   assert(is.numeric,growth_potential)
 ```
 
 
