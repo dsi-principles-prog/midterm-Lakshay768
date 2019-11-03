@@ -97,7 +97,19 @@ fifa20_data %>%
 ## 4) Creating a function to find out the growth potential of a player.
 
 ```{r}
+growth_potential <- function(df){
+  df%>%
+    mutate(growth_potential=potential - overall)
+}
 
+fifa20_data%>%
+  growth_potential%>%
+  select(growth_potential,everything())
+
+fifa20_data%>%
+  growth_potential%>%
+  select(growth_potential,everything())%>%
+  assert(is.numeric, growth_potential)
 ```
 
 
